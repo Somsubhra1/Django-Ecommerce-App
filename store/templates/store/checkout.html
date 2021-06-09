@@ -1,7 +1,7 @@
 {% extends 'store/main.html' %} {% load static %} {% block content %}
 <div class="row">
   <div class="col-lg-6">
-    <div class="box-element" id="from-wrapper">
+    <div class="box-element" id="form-wrapper">
       <form id="form">
         <div id="user-info">
           <div class="form-field">
@@ -167,6 +167,24 @@
       userFormData.name = form.name.value;
       userFormData.email = form.email.value;
     }
+
+    var url = "/process_order/";
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      body: JSON.stringify({ form: userFormData, shipping: shippingInfo }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        alert("Transaction complete");
+        window.location.href = "{% url 'store' %}";
+      })
+      .catch((err) => {});
   }
 </script>
 {% endblock content %}
