@@ -33,6 +33,9 @@ function updateUserOrder(productId, action) {
     .then((response) => {
       return response.json();
     })
-    .then((data) => console.log(data))
+    .then((data) => {
+      console.log(data);
+      location.reload();
+    })
     .catch((err) => {});
 }
