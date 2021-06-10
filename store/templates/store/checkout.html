@@ -186,6 +186,8 @@
       .then((data) => {
         console.log(data);
         alert("Transaction complete");
+        cart = {};
+        document.cookie = `cart=${JSON.stringify(cart)};domain=;path=/`;
         window.location.href = "{% url 'store' %}";
       })
       .catch((err) => {});

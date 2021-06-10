@@ -4,7 +4,7 @@ from .models import *
 from django.http import JsonResponse
 # from django.views.decorators.csrf import csrf_exempt
 import datetime
-from .utils import cartData
+from .utils import cartData, cookieCart, guestOrder
 # Create your views here.
 
 
@@ -77,15 +77,18 @@ def processOrder(request):
         order, created = Order.objects.get_or_create(
             customer=customer, complete=False)
 
-        total = float(data['form']['total'])
+    else:
+        customer, order = guestOrder(request, data)
 
-        order.transaction_id = transaction_id
+    total = float(data['form']['total'])
 
-        if total == order.get_cart_total:
-            print("complete", order.id)
-            order.complete = True
+    order.transaction_id = transaction_id
 
-        order.save()
+    if total == order.get_cart_total:
+        print("complete", order.id)
+        order.complete = True
+
+    order.save()
 
     if order.shipping:
         ShippingAddress.objects.create(
@@ -96,8 +99,5 @@ def processOrder(request):
             state=data['shipping']['state'],
             zipcode=data['shipping']['zipcode'],
         )
-
-    else:
-        print("User not logged in")
 
     return JsonResponse('Payment complete', safe=False)
