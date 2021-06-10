@@ -84,7 +84,7 @@ def processOrder(request):
 
     order.transaction_id = transaction_id
 
-    if total == order.get_cart_total:
+    if total == float(order.get_cart_total):
         print("complete", order.id)
         order.complete = True
 
