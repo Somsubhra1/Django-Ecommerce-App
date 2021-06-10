@@ -29,13 +29,11 @@ function addCookieItem(productId, action) {
   }
 
   if (action == "remove") {
-    if (cart[productId] == undefined) {
-      cart[productId].quantity -= 1;
+    cart[productId].quantity -= 1;
 
-      if (cart[productId].quantity <= 0) {
-        console.log("Remove item");
-        delete cart[productId];
-      }
+    if (cart[productId].quantity <= 0) {
+      console.log("Remove item");
+      delete cart[productId];
     }
   }
   console.log(cart);
